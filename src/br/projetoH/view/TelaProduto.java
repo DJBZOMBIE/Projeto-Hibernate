@@ -2,10 +2,14 @@ package br.projetoH.view;
 
 import java.awt.Color;
 import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -13,12 +17,18 @@ import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
+import br.projetoH.controller.ProdutoController;
+import br.projetoH.dao.ProdutoDao;
+import br.projetoH.model.Produto;
+import br.projetoH.model.ProdutoTableModel;
+
 public class TelaProduto extends JFrame{
-	//private produtoController controller = new produtoController();
-		//private ArrayList<Produto> newList = new ArrayList<Produto>();
-		//private ProdutoTableModel model = new ProdutoTableModel(newList);
+	    private ProdutoController controller = new ProdutoController();
+		private ArrayList<Produto> newList = new ArrayList<Produto>();
+		private ProdutoTableModel model = new ProdutoTableModel(newList);
 		
-		private JTable table = new JTable(/*model*/);
+		
+		private JTable table = new JTable(model);
 		private JLabel lbCod = new JLabel("Pesquisar por (ID):");
 		private JTextField txCod = new JTextField();
 		private JPanel pnBase = new JPanel();
@@ -36,6 +46,8 @@ public class TelaProduto extends JFrame{
 		
 		public void init(){
 			configurePnTab();
+			configureBtListar();
+			configureBtRemover();
 			GridBagLayout layoutData = new GridBagLayout();
 			pnBase.setLayout(layoutData);
 			
@@ -87,4 +99,54 @@ public class TelaProduto extends JFrame{
 			super.setVisible(true);
 			super.pack();
 		}
+		
+		//botao Listar
+		private void configureBtListar(){
+			ActionListener autenticacao = new ActionListener(){
+
+				@Override
+				public void actionPerformed(ActionEvent arg0) {
+					try {
+						JButtomListarProdutos();
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+				}
+				
+			};
+			btList.addActionListener(autenticacao);
+		}
+		private void JButtomListarProdutos() throws Exception{
+			model.setColumnIdentifiers(new String[]{"Cod","Nome","Saldo"});
+			this.newList = (ArrayList<Produto>) controller.listarProdutos();
+			for(int i = 0; i< newList.size(); i++){
+				model.addRow(new Object[]{this.newList.get(i).getCod(), this.newList.get(i).getNome(), this.newList.get(i).getSaldo()});
+			}
+		}
+		
+		//botao remover
+		private void configureBtRemover(){
+			ActionListener autenticacao = new ActionListener(){
+
+				@Override
+				public void actionPerformed(ActionEvent arg0) {
+					JButtomRemoverProdutos();
+				}
+				
+			};
+			btRemove.addActionListener(autenticacao);
+		}
+		
+		private void JButtomRemoverProdutos(){
+			Produto i = this.newList.get(table.getSelectedRow());
+			
+			try{
+				controller.excluir(i.getCod());
+			}catch(Exception ex){
+				JOptionPane.showMessageDialog(null, ex.getMessage());
+			}
+		}
+			
 }
