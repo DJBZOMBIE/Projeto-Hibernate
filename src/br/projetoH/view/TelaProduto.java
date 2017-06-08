@@ -36,7 +36,7 @@ public class TelaProduto extends JFrame{
 		
 		private JButton btbuscar = new JButton("Buscar");
 		private JButton btList = new JButton("Listar");
-		private JButton btNovo = new JButton("Novo");
+		private JButton btNovo = new JButton("Inserir");
 		private JButton btAlt = new JButton("Alterar");
 		private JButton btRemove = new JButton("Remover");
 		
@@ -47,7 +47,10 @@ public class TelaProduto extends JFrame{
 		public void init(){
 			configurePnTab();
 			configureBtListar();
+			configureBtInserir();
+			configureBtAlterar();
 			configureBtRemover();
+			
 			GridBagLayout layoutData = new GridBagLayout();
 			pnBase.setLayout(layoutData);
 			
@@ -124,6 +127,44 @@ public class TelaProduto extends JFrame{
 			for(int i = 0; i< newList.size(); i++){
 				model.addRow(new Object[]{this.newList.get(i).getCod(), this.newList.get(i).getNome(), this.newList.get(i).getSaldo()});
 			}
+		}
+		
+		//botao inserir
+		private void configureBtInserir(){
+			ActionListener autenticacao = new ActionListener(){
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					JButtomInserirProduto();
+					
+				}
+				
+			};
+			btNovo.addActionListener(autenticacao);
+		}
+		
+		private void JButtomInserirProduto(){
+			TelaCadastroProduto tlCad = new TelaCadastroProduto();
+			tlCad.init();
+		}
+		
+		//botao alterar
+		private void configureBtAlterar(){
+			ActionListener autenticacao = new ActionListener(){
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					JButtomAlterarProduto();
+					
+				}
+				
+			};
+			btAlt.addActionListener(autenticacao);
+		}
+		
+		private void JButtomAlterarProduto(){
+			TelaAlterarProduto tlAlt = new TelaAlterarProduto();
+			tlAlt.init();
 		}
 		
 		//botao remover

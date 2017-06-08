@@ -2,6 +2,8 @@ package br.projetoH.view;
 
 import java.awt.Color;
 import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -36,7 +38,10 @@ public class TelaCliente extends JFrame{
 	}
 
 	public void init(){
+		configureBtInserir();
+		configureBtAlterar();
 		configurePnTab();
+		
 		GridBagLayout layoutData = new GridBagLayout();
 		pnBase.setLayout(layoutData);
 		
@@ -52,40 +57,79 @@ public class TelaCliente extends JFrame{
 		super.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); //quando clicar em fechar não irá fechar o form principal
 	}
 	
-public void configurePnTab(){
+	public void configurePnTab(){
+			
+			JScrollPane scroll = new JScrollPane(table);
+			GridBagLayout layoutData = new GridBagLayout();
+			
+			
+			pnTab.setLayout(layoutData);
+			
+			GBC gbc1 = new GBC(1,1).setSpan(1, 1);
+			GBC gbc2 = new GBC(2,1).setSpan(3, 1);
+			GBC gbc8 = new GBC(5,1).setSpan(1, 1);
+			GBC gbc3 = new GBC(1,8).setSpan(1, 1);//botoes
+			GBC gbc4 = new GBC(2,8).setSpan(1, 1);
+			GBC gbc5 = new GBC(3,8).setSpan(1, 1);
+			GBC gbc6 = new GBC(4,8).setSpan(1, 1);//fim botoes
+			GBC gbc7 = new GBC(1,3).setSpan(6, 3);
+			pnTab.add(lbCod, gbc1);
+			pnTab.add(txCod, gbc2);
+			pnTab.add(btList, gbc3);
+			pnTab.add(btNovo, gbc4);
+			pnTab.add(btAlt, gbc5);
+			pnTab.add(btRemove, gbc6);
+			pnTab.add(scroll, gbc7);
+			pnTab.add(btbuscar,gbc8);
+			
+			LineBorder colorBorder = new LineBorder(Color.darkGray);
+			TitledBorder border = new TitledBorder(colorBorder, "Cliente");
+			pnTab.setBorder(border);
+			
+			
+			
+			super.setSize(200, 300);
+			super.setContentPane(pnTab);
+			super.setVisible(true);
+			super.pack();
+		}
+	
+		//botao inserir
+		private void configureBtInserir(){
+			ActionListener autenticacao = new ActionListener(){
 		
-		JScrollPane scroll = new JScrollPane(table);
-		GridBagLayout layoutData = new GridBagLayout();
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					JButtomInserirCliente();
+					
+				}
+				
+			};
+			btNovo.addActionListener(autenticacao);
+		}
 		
+		private void JButtomInserirCliente(){
+			TelaCadastroCliente tlCad = new TelaCadastroCliente();
+			tlCad.init();
+		}
 		
-		pnTab.setLayout(layoutData);
+		//botao alterar
+		private void configureBtAlterar(){
+			ActionListener autenticacao = new ActionListener(){
 		
-		GBC gbc1 = new GBC(1,1).setSpan(1, 1);
-		GBC gbc2 = new GBC(2,1).setSpan(3, 1);
-		GBC gbc8 = new GBC(5,1).setSpan(1, 1);
-		GBC gbc3 = new GBC(1,8).setSpan(1, 1);//botoes
-		GBC gbc4 = new GBC(2,8).setSpan(1, 1);
-		GBC gbc5 = new GBC(3,8).setSpan(1, 1);
-		GBC gbc6 = new GBC(4,8).setSpan(1, 1);//fim botoes
-		GBC gbc7 = new GBC(1,3).setSpan(6, 3);
-		pnTab.add(lbCod, gbc1);
-		pnTab.add(txCod, gbc2);
-		pnTab.add(btList, gbc3);
-		pnTab.add(btNovo, gbc4);
-		pnTab.add(btAlt, gbc5);
-		pnTab.add(btRemove, gbc6);
-		pnTab.add(scroll, gbc7);
-		pnTab.add(btbuscar,gbc8);
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					JButtomAlterarCliente();
+					
+				}
+				
+			};
+			btAlt.addActionListener(autenticacao);
+		}
 		
-		LineBorder colorBorder = new LineBorder(Color.darkGray);
-		TitledBorder border = new TitledBorder(colorBorder, "Cliente");
-		pnTab.setBorder(border);
+		private void JButtomAlterarCliente(){
+			TelaAlterarCliente tlAlt = new TelaAlterarCliente();
+			tlAlt.init();
+		}
 		
-		
-		
-		super.setSize(200, 300);
-		super.setContentPane(pnTab);
-		super.setVisible(true);
-		super.pack();
-	}
 }
