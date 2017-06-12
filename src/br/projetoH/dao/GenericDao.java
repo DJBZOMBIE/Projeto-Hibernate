@@ -2,11 +2,13 @@ package br.projetoH.dao;
 
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
+import javax.swing.JOptionPane;
 
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
@@ -40,7 +42,7 @@ public class GenericDao<T extends Serializable>{
     		t.printStackTrace();
     		tx.rollback();
     	}finally{
-    		close();
+    		close();//fecha bd
     	}
     }
     
@@ -75,9 +77,17 @@ public class GenericDao<T extends Serializable>{
     }
     
     public List<T> findAll() throws Exception {
-		Session session = (Session) getEntityManager().getDelegate();
+    	ArrayList<T> l = new ArrayList<T>();
+    	try{
+    		Session session = (Session) getEntityManager().getDelegate();
+    		l= (ArrayList<T>) session.createCriteria(persistentClass).list();
+    	}catch(Exception e){
+    		JOptionPane.showMessageDialog(null, "Erro ao listar!");
+    	}finally{
+    		close();
+    	}
+		return l;
 		
-		return session.createCriteria(persistentClass).list();
 	}
     
     public T findByName(String nome){

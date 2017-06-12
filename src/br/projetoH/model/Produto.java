@@ -18,7 +18,7 @@ import org.hibernate.annotations.Parameter;
 
 
 @Entity
-@Table(name = "produto")
+@Table(name = "produto", schema = "public")
 public class Produto implements Serializable{
 	private static final long serialVersionUID = 1L;
 	

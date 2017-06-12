@@ -24,4 +24,6 @@ public class ProdutoDao extends GenericDao<Produto>{
 		Produto p = findById(id);
 		delete(p);
 	}
+	
+	
 }

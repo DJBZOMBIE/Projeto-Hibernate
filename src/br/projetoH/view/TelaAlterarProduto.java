@@ -9,12 +9,17 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
+import br.projetoH.controller.ProdutoController;
+import br.projetoH.model.Produto;
+
 public class TelaAlterarProduto extends JFrame{
+	private ProdutoController controller = new ProdutoController();
 	private JLabel lbCod = new JLabel("ID do produto:");
 	private JLabel lbNome = new JLabel("Nome:");
 	private JLabel lbSaldo = new JLabel("Saldo:");
@@ -36,6 +41,7 @@ public class TelaAlterarProduto extends JFrame{
 	public void init(){
 		configurePnBase();
 		configurePnBotao();
+		configureBtSalvar();
 		configuteBtCancelar();
 		
 		GridBagLayout layoutData = new GridBagLayout();
@@ -113,5 +119,53 @@ public class TelaAlterarProduto extends JFrame{
 	
 	private void JButtonCancelarActionPerfomed(){
 		this.dispose();
+	}
+	
+	//botao salvar
+	private void configureBtSalvar(){
+		ActionListener lsAutenticacao = new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				JButtonSalvarActionPerfomed();
+			}
+			
+		};
+		btSalvar.addActionListener(lsAutenticacao);
+	}
+	
+	private void JButtonSalvarActionPerfomed(){
+		int number1, number2;
+		String valor1, valor2;
+		
+		try{
+			Produto prod = new Produto();
+			try{
+				valor1 = txCod.getText();
+				number1 = Integer.parseInt(valor1);
+				prod.setCod(number1);
+			}catch(NumberFormatException ex){
+				JOptionPane.showMessageDialog(null,"Digite apenas números inteiros nos campos de números"+ex);
+			}
+			prod.setNome(txNome.getText());
+			try{
+				valor2 = txSaldo.getText();
+				number2 = Integer.parseInt(valor2);
+				prod.setSaldo(number2);
+			}catch(NumberFormatException ex){
+				JOptionPane.showMessageDialog(null,"Digite apenas números inteiros nos campos de números"+ex);
+			}
+			controller.alterar(prod.getCod(),prod.getNome(),prod.getSaldo());
+			JOptionPane.showMessageDialog(null, "Produto alterado com sucesso!");
+			clearField();
+		}catch(Exception ex){
+			JOptionPane.showMessageDialog(this, "Nao foi possivel alterar produto!" + ex.getLocalizedMessage());
+		}
+	}
+	
+	private void clearField(){
+		txCod.setText("");
+		txNome.setText("");
+		txSaldo.setText("");
 	}
 }

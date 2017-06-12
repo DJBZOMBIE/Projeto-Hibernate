@@ -127,6 +127,7 @@ public class TelaProduto extends JFrame{
 			for(int i = 0; i< newList.size(); i++){
 				model.addRow(new Object[]{this.newList.get(i).getCod(), this.newList.get(i).getNome(), this.newList.get(i).getSaldo()});
 			}
+			
 		}
 		
 		//botao inserir
@@ -185,6 +186,7 @@ public class TelaProduto extends JFrame{
 			
 			try{
 				controller.excluir(i.getCod());
+				JOptionPane.showMessageDialog(null, "produto removido com sucesso!");
 			}catch(Exception ex){
 				JOptionPane.showMessageDialog(null, ex.getMessage());
 			}

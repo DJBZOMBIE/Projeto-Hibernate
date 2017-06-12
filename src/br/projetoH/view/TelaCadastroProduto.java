@@ -9,12 +9,18 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
+import br.projetoH.controller.ProdutoController;
+import br.projetoH.dao.ProdutoDao;
+import br.projetoH.model.Produto;
+
 public class TelaCadastroProduto extends JFrame{
+	private ProdutoController controller = new ProdutoController();
 	private JLabel lbNome = new JLabel("Nome:");
 	private JLabel lbSaldo = new JLabel("Saldo:");
 	
@@ -34,6 +40,7 @@ public class TelaCadastroProduto extends JFrame{
 	public void init(){
 		configurePnBase();
 		configurePnBotao();
+		configureBtSalvar();
 		configureBtCancelar();
 		GridBagLayout layoutData = new GridBagLayout();
 		pnMain.setLayout(layoutData);
@@ -109,5 +116,45 @@ public class TelaCadastroProduto extends JFrame{
 	
 	private void JButtomCancelarActionPerformed(){
 		this.dispose();
+	}
+	
+	//botao salvar
+	private void configureBtSalvar(){
+		ActionListener lstAutenticacao = new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				JButtomSalvarActionPerformed();
+				
+			}
+			
+		};
+		btSalvar.addActionListener(lstAutenticacao);
+	}
+	
+	private void JButtomSalvarActionPerformed(){
+		int number;
+		String valor;
+		try{
+			Produto prod = new Produto();
+			prod.setNome(txNome.getText());
+			try{
+				valor = txSaldo.getText();
+				number = Integer.parseInt(valor);
+				prod.setSaldo(number);
+			}catch(NumberFormatException ex){
+				JOptionPane.showMessageDialog(null,"Digite apenas números inteiros nos campos de números"+ex);
+			}
+			controller.salvar(prod.getNome(),prod.getSaldo());
+			JOptionPane.showMessageDialog(null, "Produto cadastrado com sucesso!");
+			clearField();
+		}catch(Exception ex){
+			 JOptionPane.showMessageDialog(this, "Nao foi possivel salvar produto!" + ex.getLocalizedMessage());
+		}
+	}
+	
+	private void clearField(){
+		txNome.setText("");
+		txSaldo.setText("");
 	}
 }
