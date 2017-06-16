@@ -6,7 +6,7 @@ import javax.swing.table.DefaultTableModel;
 
 public class ClienteTableModel extends DefaultTableModel {
 	private ArrayList<Cliente> internalList;
-	private String[] header = new String[] {"Cod", "Nome", "email", "cpf"};
+	private String[] header = new String[] {"Cod", "Nome", "email"};
 	
 	public ClienteTableModel(ArrayList<Cliente> newList){
 		this.internalList = newList;

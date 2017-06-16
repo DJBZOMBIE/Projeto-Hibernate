@@ -25,5 +25,4 @@ public class ProdutoDao extends GenericDao<Produto>{
 		delete(p);
 	}
 	
-	
 }

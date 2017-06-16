@@ -10,15 +10,18 @@ import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
+import br.projetoH.controller.ProdutoController;
+import br.projetoH.dao.ProdutoDao;
 import br.projetoH.model.Produto;
 
 public class TelaEntradaEstoque extends JFrame{
-	//private produtoController controller;
+	private ProdutoController controller = new ProdutoController();
 	private ArrayList<Produto> newList = new ArrayList<Produto>();
 	
 	private JLabel lbCod = new JLabel("ID do Produto (Desejado):");
@@ -41,7 +44,7 @@ public class TelaEntradaEstoque extends JFrame{
 	public void init(){
 		configurePnBase();
 		configurePnBotao();
-		
+		configureBtSalvar();
 		GridBagLayout layoutData = new GridBagLayout();
 		pnMain.setLayout(layoutData);
 		
@@ -60,7 +63,7 @@ public class TelaEntradaEstoque extends JFrame{
 	}
 	
 public void configurePnBase(){
-		configuteBtCancelar();
+		configureBtCancelar();
 	
 		GridBagLayout layoutData3 = new GridBagLayout();
 		pnBase.setLayout(layoutData3);
@@ -100,9 +103,50 @@ public void configurePnBase(){
 		super.setVisible(true);
 		super.pack();
 	}
+	//botao salvar
+	private void configureBtSalvar(){
+		ActionListener lsAutenticacao = new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JButtonSalvarActionPerfomed();
+				
+			}
+			
+		};
+		btSalvar.addActionListener(lsAutenticacao);
+	}
+	
+	private void JButtonSalvarActionPerfomed(){
+		int number,number2;
+		String valor,valor2;
+		try{
+			Produto prod = new Produto();
+			ProdutoDao prodDao = new ProdutoDao();
+			try{
+				valor2 = txCod.getText();
+				number2 = Integer.parseInt(valor2);
+				valor = txQuantidade.getText();
+				number = Integer.parseInt(valor);
+				try{
+					prod = controller.buscarId(number2);
+					prod.setSaldo(prod.getSaldo() + number);
+					JOptionPane.showMessageDialog(null, "estoque de produto atualizado!");
+				}catch(Exception e){
+					JOptionPane.showMessageDialog(null,"ID não encontrado"+e);
+				}
+				
+			}catch(NumberFormatException ex){
+				JOptionPane.showMessageDialog(null,"Digite apenas números inteiros nos campos de números"+ex);
+			}
+			prodDao.alterar(prod);
+			clearField();
+		}catch(Exception ex){
+			JOptionPane.showMessageDialog(this, "Nao foi possivel atualizar estoque de produto!" + ex.getLocalizedMessage());
+		}
+	}
 	
 	//botao cancelar
-	private void configuteBtCancelar(){
+	private void configureBtCancelar(){
 		ActionListener lsAutenticacao = new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -116,5 +160,10 @@ public void configurePnBase(){
 	
 	private void JButtonCancelarActionPerfomed(){
 		this.dispose();
+	}
+	
+	private void clearField(){
+		txCod.setText("");
+		txQuantidade.setText("");
 	}
 }

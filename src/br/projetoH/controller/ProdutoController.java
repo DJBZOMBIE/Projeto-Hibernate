@@ -45,4 +45,9 @@ public class ProdutoController {
 		ProdutoDao dao = new ProdutoDao();
 		return dao.findByName(nome);
 	}
+	
+	public Produto buscarId(int id)throws Exception{
+		ProdutoDao dao = new ProdutoDao();
+		return dao.findById(id);
+	}
 }

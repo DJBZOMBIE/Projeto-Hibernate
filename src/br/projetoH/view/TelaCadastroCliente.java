@@ -9,12 +9,18 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
+import br.projetoH.controller.ClienteController;
+import br.projetoH.model.Cliente;
+
 public class TelaCadastroCliente extends JFrame {
+	private ClienteController controller = new ClienteController();
+	
 	private JLabel lbNome = new JLabel("Nome:");
 	private JLabel lbEmail = new JLabel("E-Mail:");
 	
@@ -34,6 +40,7 @@ public class TelaCadastroCliente extends JFrame {
 	public void init(){
 		configurePnBase();
 		configurePnBotao();
+		configureBtSalvar();
 		configureBtCancelar();
 		GridBagLayout layoutData = new GridBagLayout();
 		pnMain.setLayout(layoutData);
@@ -90,7 +97,32 @@ public class TelaCadastroCliente extends JFrame {
 		super.setVisible(true);
 		super.pack();
 		
-		
+	}
+	//botao salvar
+	private void configureBtSalvar(){
+		ActionListener lstAutenticacao = new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				JButtomSalvarActionPerformed();
+				
+			}
+			
+		};
+		btSalvar.addActionListener(lstAutenticacao);
+	}
+	
+	private void JButtomSalvarActionPerformed(){
+		try{
+			Cliente cli = new Cliente();
+			cli.setNome(txNome.getText());
+			cli.setEmail(txEmail.getText());
+			controller.salvar(cli.getNome(), cli.getEmail());
+			JOptionPane.showMessageDialog(null, "Cliente cadastrado com sucesso!");
+			clearField();
+		}catch(Exception e){
+			JOptionPane.showMessageDialog(this, "Nao foi possivel salvar produto!" + e.getLocalizedMessage());
+		}
 	}
 	
 	//botao cancelar
@@ -109,5 +141,10 @@ public class TelaCadastroCliente extends JFrame {
 	
 	private void JButtomCancelarActionPerformed(){
 		this.dispose();
+	}
+	
+	private void clearField(){
+		txNome.setText("");
+		txEmail.setText("");
 	}
 }

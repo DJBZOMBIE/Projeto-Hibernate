@@ -9,12 +9,18 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
+import br.projetoH.controller.ClienteController;
+import br.projetoH.model.Cliente;
+
 public class TelaAlterarCliente extends JFrame{
+	private ClienteController controller = new ClienteController();
+	
 	private JLabel lbCod = new JLabel("ID do Cliente:");
 	private JLabel lbNome = new JLabel("Nome:");
 	private JLabel lbEmail = new JLabel("E-Mail:");
@@ -36,7 +42,8 @@ public class TelaAlterarCliente extends JFrame{
 	public void init(){
 		configurePnBase();
 		configurePnBotao();
-		configuteBtCancelar();
+		configureBtSalvar();
+		configureBtCancelar();
 		
 		GridBagLayout layoutData = new GridBagLayout();
 		pnMain.setLayout(layoutData);
@@ -97,9 +104,44 @@ public class TelaAlterarCliente extends JFrame{
 		super.setVisible(true);
 		super.pack();
 	}
+	//botao salvar
+	private void configureBtSalvar(){
+		ActionListener lsAutenticacao = new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JButtonSalvarActionPerfomed();
+			}
+			
+		};
+		btSalvar.addActionListener(lsAutenticacao);
+	}
+	
+	private void JButtonSalvarActionPerfomed(){
+		int number;
+		String valor;
+		
+		try{
+			Cliente cli = new Cliente();
+			try{
+				valor = txCod.getText();
+				number = Integer.parseInt(valor);
+				cli.setCod(number);
+			}catch(NumberFormatException ex){
+				JOptionPane.showMessageDialog(null,"Digite apenas números inteiros nos campos de números"+ex);
+			}
+			cli.setNome(txNome.getText());
+			cli.setEmail(txEmail.getText());
+			controller.alterar(cli.getCod(), cli.getNome(), cli.getEmail());
+			JOptionPane.showMessageDialog(null, "Cliente alterado com sucesso!");
+			clearField();
+		}catch(Exception e){
+			JOptionPane.showMessageDialog(this, "Nao foi possivel alterar Cliente!" + e.getLocalizedMessage());
+		}
+	}
 	
 	//botao cancelar
-	private void configuteBtCancelar(){
+	private void configureBtCancelar(){
 		ActionListener lsAutenticacao = new ActionListener(){
 
 			@Override
@@ -113,5 +155,11 @@ public class TelaAlterarCliente extends JFrame{
 	
 	private void JButtonCancelarActionPerfomed(){
 		this.dispose();
+	}
+	
+	private void clearField(){
+		txCod.setText("");
+		txNome.setText("");
+		txEmail.setText("");
 	}
 }

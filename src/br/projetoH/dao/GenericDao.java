@@ -8,6 +8,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.swing.JOptionPane;
 
 import org.hibernate.Session;
@@ -105,5 +106,7 @@ public class GenericDao<T extends Serializable>{
         }
         
     }
+    
+ 
 
 }

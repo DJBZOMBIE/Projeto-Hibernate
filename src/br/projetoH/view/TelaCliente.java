@@ -4,10 +4,12 @@ import java.awt.Color;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -15,13 +17,17 @@ import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
+import br.projetoH.controller.ClienteController;
+import br.projetoH.model.Cliente;
+import br.projetoH.model.ClienteTableModel;
+
 public class TelaCliente extends JFrame{
-	//private clienteController controller = new clienteController();
-	//private ArrayList<Cliente> newList = new ArrayList<Cliente>();
-	//private ClienteTableModel model = new ClienteTableModel(newList);
-	//private telaPrincipal tela = new telaPrincipal();
+	private ClienteController controller = new ClienteController();
+	private ArrayList<Cliente> newList = new ArrayList<Cliente>();
+	private ClienteTableModel model = new ClienteTableModel(newList);
 	
-	private JTable table = new JTable(/*model*/);
+	
+	private JTable table = new JTable(model);
 	private JLabel lbCod = new JLabel("Pesquisar por (ID):");
 	private JTextField txCod = new JTextField();
 	private JPanel pnBase = new JPanel();
@@ -41,7 +47,8 @@ public class TelaCliente extends JFrame{
 		configureBtInserir();
 		configureBtAlterar();
 		configurePnTab();
-		
+		configureBtListar();
+		configureBtRemover();
 		GridBagLayout layoutData = new GridBagLayout();
 		pnBase.setLayout(layoutData);
 		
@@ -93,7 +100,33 @@ public class TelaCliente extends JFrame{
 			super.setVisible(true);
 			super.pack();
 		}
-	
+		
+		//botao listar
+		private void configureBtListar(){
+			ActionListener autenticacao = new ActionListener(){
+
+				@Override
+				public void actionPerformed(ActionEvent arg0) {
+					try{
+						JButtomListarClientes();
+					}catch(Exception e){
+						e.printStackTrace();
+					}
+					
+				}
+				
+			};
+			btList.addActionListener(autenticacao);
+		}
+		
+		private void JButtomListarClientes() throws Exception{
+			model.setColumnIdentifiers(new String[]{"Cod","Nome","Email"});
+			this.newList = (ArrayList<Cliente>) controller.listarClientes();
+			for(int i = 0; i< newList.size();i++){
+				model.addRow(new Object[]{this.newList.get(i).getCod(), this.newList.get(i).getNome(),this.newList.get(i).getEmail()});
+			}
+		}
+		
 		//botao inserir
 		private void configureBtInserir(){
 			ActionListener autenticacao = new ActionListener(){
@@ -130,6 +163,29 @@ public class TelaCliente extends JFrame{
 		private void JButtomAlterarCliente(){
 			TelaAlterarCliente tlAlt = new TelaAlterarCliente();
 			tlAlt.init();
+		}
+		//botao remover
+		private void configureBtRemover(){
+			ActionListener autenticacao = new ActionListener(){
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					JButtomRemoverClientes();
+					
+				}
+				
+			};
+			btRemove.addActionListener(autenticacao);
+		}
+		
+		private void JButtomRemoverClientes(){
+			Cliente i = this.newList.get(table.getSelectedRow());
+			try{
+				controller.excluir(i.getCod());
+				JOptionPane.showMessageDialog(null, "Cliente removido com sucesso!");
+			}catch(Exception e){
+				JOptionPane.showMessageDialog(null, e.getMessage());
+			}
 		}
 		
 }
