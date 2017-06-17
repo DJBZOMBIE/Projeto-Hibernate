@@ -1,8 +1,9 @@
 package br.projetoH.view;
 
 import java.awt.Color;
-import java.awt.GraphicsEnvironment;
 import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -15,12 +16,14 @@ import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
+import br.projetoH.controller.PedidoController;
 import br.projetoH.model.Cliente;
 import br.projetoH.model.Item;
 import br.projetoH.model.Pedido;
+import br.projetoH.model.PedidoTableModel;
 
 public class TelaPedido extends JFrame {
-	//private pedidoController controller = new pedidoController();
+	private PedidoController controller = new PedidoController();
 	private ArrayList<Pedido> newList = new ArrayList<Pedido>();
 	private ArrayList<Item> newList2 = new ArrayList<Item>();
 	private ArrayList<Cliente> newListCli = new ArrayList<Cliente>();
@@ -51,6 +54,7 @@ public class TelaPedido extends JFrame {
 	public void init(){
 		congifurepnTab2();
 		congifurepnTab();
+		configureBtSalvar();
 		GridBagLayout layoutData = new GridBagLayout();
 		pnBase.setLayout(layoutData);
 		
@@ -124,4 +128,24 @@ public void congifurepnTab2(){
 		super.pack();
 		super.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 }
+	
+	//botao salvar
+	
+	private void configureBtSalvar(){
+		ActionListener autenticao = new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				JButtomBtSalvarActionPerformed();
+				
+			}
+			
+		};
+		btNovo.addActionListener(autenticao);
+	}
+	
+	private void JButtomBtSalvarActionPerformed(){
+		TelaCadastroPedido tlPed = new TelaCadastroPedido();
+		tlPed.init();
+	}
 }
