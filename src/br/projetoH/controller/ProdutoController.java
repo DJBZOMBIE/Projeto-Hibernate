@@ -10,9 +10,18 @@ import br.projetoH.model.Produto;
 
 public class ProdutoController {
 	public void salvar(String nome, int saldo) throws Exception{
+		
 		Produto prod = new Produto();
 		prod.setNome(nome);
 		prod.setSaldo(saldo);
+		
+		if(prod.getNome().trim().equals("")){
+			JOptionPane.showMessageDialog(null, "O campo nome esta vazio");
+		}
+		
+		if(prod.getSaldo()<=0){
+			JOptionPane.showMessageDialog(null, "O saldo deve ser maior do zero");
+		}
 		
 		new ProdutoDao().salvar(prod);
 	}
@@ -22,6 +31,15 @@ public class ProdutoController {
 		prod.setCod(id);
 		prod.setNome(nome);
 		prod.setSaldo(saldo);
+		
+		if(prod.getNome().trim().equals("")){
+			JOptionPane.showMessageDialog(null, "O campo nome esta vazio");
+		}
+		
+		if(prod.getSaldo()<=0){
+			JOptionPane.showMessageDialog(null, "O saldo deve ser maior do zero");
+		}
+		
 		
 		new ProdutoDao().alterar(prod);
 	}

@@ -27,7 +27,7 @@ public class TelaPedido extends JFrame {
 	private ArrayList<Pedido> newList = new ArrayList<Pedido>();
 	private ArrayList<Item> newList2 = new ArrayList<Item>();
 	private ArrayList<Cliente> newListCli = new ArrayList<Cliente>();
-	//private PedidoTableModel model = new PedidoTableModel(newList);
+	private PedidoTableModel model = new PedidoTableModel(newList);
 	
 	//private itemTableModel model2 = new itemTableModel(newList2);
 	
