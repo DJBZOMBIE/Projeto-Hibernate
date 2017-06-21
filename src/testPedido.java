@@ -38,7 +38,7 @@ public class testPedido {
 			item1.setProduto(produto); //item recebe id do produto
 			item1.setQuantidade(2); //quantidade de itens
 			itens.add(item1);
-			PedidoBI.createPedido(cliente, itens);
+			//PedidoBI.createPedido(cliente, itens);
 		}catch(PedidoException exception){
 			System.out.println("Produto " + exception.getProduct().getNome() + " não tem saldo suficiente para a venda de " + exception.getQuantity() + " itens");
 		}

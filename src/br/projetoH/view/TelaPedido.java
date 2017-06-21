@@ -218,6 +218,10 @@ public void congifurepnTab2(){
 		}
 	}
 	
+	//verificar itens do pedido
+	private void configureBtVerificar(){
+		
+	}
 	//botao remover
 	private void configureBtRemover(){
 		ActionListener autenticacao = new ActionListener(){
