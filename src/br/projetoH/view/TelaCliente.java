@@ -49,6 +49,8 @@ public class TelaCliente extends JFrame{
 		configurePnTab();
 		configureBtListar();
 		configureBtRemover();
+		configureBtPesquisar();
+		
 		GridBagLayout layoutData = new GridBagLayout();
 		pnBase.setLayout(layoutData);
 		
@@ -187,4 +189,41 @@ public class TelaCliente extends JFrame{
 			}
 		}
 		
+		//pesquisar
+		private void configureBtPesquisar(){
+			ActionListener autenticacao = new ActionListener(){
+
+				@Override
+				public void actionPerformed(ActionEvent arg0) {
+					JButtonBuscar();
+				}
+				
+			};
+			btbuscar.addActionListener(autenticacao);
+		}
+		
+		private void JButtonBuscar(){
+			int numero;
+			String valor;
+			model.setColumnIdentifiers(new String[]{"Cod","Nome","Email"});
+			try{
+				Cliente cli = new Cliente();
+				try{
+					valor = txCod.getText();
+					numero = Integer.parseInt(valor);
+					if(controller.buscarId(numero)==1){
+						cli = controller.buscarIdD(numero);
+					}else{
+						throw new Exception("O id: "+numero+" não existe!");
+					}
+				}catch(NumberFormatException ex){
+					JOptionPane.showMessageDialog(null,"Digite apenas números inteiros nos campos de números  " +ex);
+				}
+				
+				model.addRow(new Object[]{cli.getCod(),cli.getNome(),cli.getEmail()});
+				txCod.setText("");
+			}catch(Exception ex){
+				JOptionPane.showMessageDialog(null,"Erro ao buscar " +ex);
+			}
+		}
 }

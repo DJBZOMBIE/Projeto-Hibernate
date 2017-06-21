@@ -7,6 +7,7 @@ import java.util.List;
 import javax.swing.JOptionPane;
 
 import br.projetoH.dao.ClienteDao;
+import br.projetoH.dao.ProdutoDao;
 import br.projetoH.model.Cliente;
 import br.projetoH.model.Produto;
 
@@ -80,6 +81,12 @@ public class ClienteController {
 		ClienteDao dao = new ClienteDao();
 		return dao.findByName(nome);
 	}
+	
+	public Cliente buscarIdD(int id)throws Exception{
+		ClienteDao dao = new ClienteDao();
+		return dao.findById(id);
+	}
+	
 	public int buscarId(int id) throws Exception{
 		int check=0;
 		this.newList = (ArrayList<Cliente>) listarClientes();

@@ -1,5 +1,6 @@
 package br.projetoH.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JOptionPane;
@@ -8,7 +9,7 @@ import br.projetoH.dao.PedidoDao;
 import br.projetoH.model.Pedido;
 
 public class PedidoController {
-	
+	private ArrayList<Pedido> newList = new ArrayList<Pedido>();
 	public void salvar(Pedido ped) throws Exception{
 		
 		if(ped.getData().equals("")){
@@ -51,5 +52,19 @@ public class PedidoController {
 	public Pedido buscarId(int id) throws Exception{
 		PedidoDao dao = new PedidoDao();
 		return dao.findById(id);
+	}
+	
+	public int buscarId2(int id) throws Exception{
+		int check=0;
+		this.newList = (ArrayList<Pedido>) listarPedido();
+		for(int i=0; i<newList.size();i++){
+			if(newList.get(i).getCod()== id){
+				check=1;
+				break;
+			}else{
+				check = 0;
+			}
+		}
+		return check;
 	}
 }

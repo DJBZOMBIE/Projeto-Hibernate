@@ -50,6 +50,7 @@ public class TelaProduto extends JFrame{
 			configureBtInserir();
 			configureBtAlterar();
 			configureBtRemover();
+			configureBtPesquisar();
 			
 			GridBagLayout layoutData = new GridBagLayout();
 			pnBase.setLayout(layoutData);
@@ -190,5 +191,49 @@ public class TelaProduto extends JFrame{
 				JOptionPane.showMessageDialog(null, ex.getMessage());
 			}
 		}
+		
+		//botão pesquisar
+		private void configureBtPesquisar(){
+			ActionListener autenticacao = new ActionListener(){
+
+				@Override
+				public void actionPerformed(ActionEvent arg0) {
+					try {
+						JButtonBuscar();
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+				}
+				
+			};
+			btbuscar.addActionListener(autenticacao);
+		}
+		private void JButtonBuscar() throws Exception{
+			int numero;
+			String valor;
+			model.setColumnIdentifiers(new String[]{"Cod","Nome","Saldo"});
+			try{
+				Produto prod = new Produto();
+				
+				try{
+					valor = txCod.getText();
+					numero = Integer.parseInt(valor);
+					if(controller.buscarId2(numero)==1){
+						prod =  controller.buscarId(numero);
+					}else{
+						throw new Exception("O id: "+numero+" não existe!");
+					
+					}
+				}catch(NumberFormatException ex){
+					JOptionPane.showMessageDialog(null,"Digite apenas números inteiros nos campos de números  " +ex);
+				}
 			
+				model.addRow(new Object[]{prod.getCod(), prod.getNome(), prod.getSaldo()});
+				txCod.setText("");
+			}catch(Exception ex){
+				JOptionPane.showMessageDialog(null,"Erro ao buscar " +ex);
+			}
+		}
 }

@@ -58,6 +58,8 @@ public class TelaPedido extends JFrame {
 		configureBtSalvar();
 		configureBtListar();
 		configureBtRemover();
+		configureBtPesquisar();
+		
 		GridBagLayout layoutData = new GridBagLayout();
 		pnBase.setLayout(layoutData);
 		
@@ -92,7 +94,7 @@ public void congifurepnTab2(){
 		GBC gbc11 = new GBC(2,1).setSpan(1, 1);
 
 		pnTab2.add(lbBuscar,gbc1);
-		pnTab2.add(btbuscar,gbc2);
+		pnTab2.add(btbuscar,gbc2); //pesquisar itens do pedido
 		pnTab2.add(txPesquisa,gbc8);
 		pnTab2.add(btList, gbc3);
 		pnTab2.add(btNovo, gbc4);
@@ -100,7 +102,7 @@ public void congifurepnTab2(){
 		pnTab2.add(scroll, gbc7);
 		pnTab2.add(lbBuscarP,gbc9);
 		pnTab2.add(txPesquisaP,gbc10);
-		pnTab2.add(btBuscarP,gbc11);
+		pnTab2.add(btBuscarP,gbc11);//botao de pesquisar pedidos
 		
 		LineBorder colorBorder = new LineBorder(Color.darkGray);
 		TitledBorder border = new TitledBorder(colorBorder, "Pedidos");
@@ -176,6 +178,44 @@ public void congifurepnTab2(){
 				//newList.get(i).getCliente().getCod();
 				model.addRow(new Object[]{this.newList.get(i).getCod(), this.newList.get(i).getData(),this.newList.get(i).getCliente().getCod()});
 			}
+	}
+	
+	//pesquisar pedidos
+	private void configureBtPesquisar(){
+		ActionListener autenticacao = new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JButtonBuscar();
+				
+			}
+			
+		};
+		btBuscarP.addActionListener(autenticacao);
+	}
+	
+	private void JButtonBuscar(){
+		int numero;
+		String valor;
+		model.setColumnIdentifiers(new String[]{"Código", "Data","Cod_Cliente"});
+		try{
+			Pedido ped = new Pedido();
+			try{
+				valor = txPesquisaP.getText();
+				numero = Integer.parseInt(valor);
+				if(controller.buscarId2(numero)==1){
+					ped = controller.buscarId(numero);
+				}else{
+					throw new Exception("O id: "+numero+" não existe!");
+				}
+			}catch(NumberFormatException ex){
+				JOptionPane.showMessageDialog(null,"Digite apenas números inteiros nos campos de números  " +ex);
+			}
+			model.addRow(new Object[]{ped.getCod(),ped.getData(),ped.getCliente().getCod()});
+			txPesquisaP.setText("");
+		}catch(Exception ex){
+			JOptionPane.showMessageDialog(null,"Erro ao buscar " +ex);
+		}
 	}
 	
 	//botao remover
