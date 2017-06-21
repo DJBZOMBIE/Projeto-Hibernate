@@ -143,13 +143,13 @@ public class TelaCadastroProduto extends JFrame{
 				number = Integer.parseInt(valor);
 				prod.setSaldo(number);
 			}catch(NumberFormatException ex){
-				JOptionPane.showMessageDialog(null,"Digite apenas números inteiros nos campos de números"+ex);
+				JOptionPane.showMessageDialog(null,"Digite apenas números inteiros nos campos de números  " +ex);
 			}
 			controller.salvar(prod.getNome(),prod.getSaldo());
 			JOptionPane.showMessageDialog(null, "Produto cadastrado com sucesso!");
 			clearField();
 		}catch(Exception ex){
-			 JOptionPane.showMessageDialog(this, "Nao foi possivel salvar produto!" + ex.getLocalizedMessage());
+			 JOptionPane.showMessageDialog(this, "Nao foi possivel salvar produto!  " + ex.getLocalizedMessage());
 		}
 	}
 	

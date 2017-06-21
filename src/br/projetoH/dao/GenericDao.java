@@ -8,8 +8,8 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import javax.swing.JOptionPane;
+import javax.persistence.criteria.CriteriaQuery;
 
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
@@ -64,14 +64,15 @@ public class GenericDao<T extends Serializable>{
     
     protected void delete(T entity){
     	EntityTransaction tx = getEntityManager().getTransaction();
-    	
     	try{
     		tx.begin();
     		getEntityManager().remove(entity);
     		tx.commit();
+    		JOptionPane.showMessageDialog(null, "Dado Removido!");
     	}catch(Throwable t){
     		 t.printStackTrace();
-             tx.rollback();
+    		 tx.rollback();
+             JOptionPane.showMessageDialog(null, "Erro ao remover dado!");
     	}finally{
     		close();
     	}
@@ -83,7 +84,7 @@ public class GenericDao<T extends Serializable>{
     		Session session = (Session) getEntityManager().getDelegate();
     		l= (ArrayList<T>) session.createCriteria(persistentClass).list();
     	}catch(Exception e){
-    		JOptionPane.showMessageDialog(null, "Erro ao listar!");
+    		JOptionPane.showMessageDialog(null,"Problemas ao Listar!");
     	}finally{
     		close();
     	}
@@ -97,6 +98,7 @@ public class GenericDao<T extends Serializable>{
     }
     
     public T findById(int id){
+  
     	Session session = (Session) getEntityManager().getDelegate();
     	return (T) session.createCriteria(persistentClass).add(Restrictions.eq("id", id)).uniqueResult();
     }

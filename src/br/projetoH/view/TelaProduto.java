@@ -186,7 +186,6 @@ public class TelaProduto extends JFrame{
 			
 			try{
 				controller.excluir(i.getCod());
-				JOptionPane.showMessageDialog(null, "produto removido com sucesso!");
 			}catch(Exception ex){
 				JOptionPane.showMessageDialog(null, ex.getMessage());
 			}

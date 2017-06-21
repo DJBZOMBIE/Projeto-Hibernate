@@ -6,6 +6,7 @@ import java.util.Date;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.swing.JOptionPane;
 
 import br.projetoH.dao.ItemDao;
 import br.projetoH.dao.PedidoDao;
@@ -31,11 +32,11 @@ public class PedidoBI {
 			Pedido ped = new Pedido();
 			ped.setCliente(cliente);
 			ped.setData(new Date());
-			
+		
 			pedidoDao.salvar(ped);
 			
-			System.out.println("Pedido de número " + ped.getCod() + " criado");
-			
+			//System.out.println("Pedido de número " + ped.getCod() + " criado");
+			JOptionPane.showMessageDialog(null, "Pedido de número " + ped.getCod() + " criado");
 			// Foreach nos Itens, inserindo cada um dos itens
 			ItemDao itemDao = new ItemDao(entityManager);
 			ProdutoDao prodDao = new ProdutoDao(entityManager);

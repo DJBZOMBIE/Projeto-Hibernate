@@ -9,30 +9,27 @@ import br.projetoH.model.Pedido;
 
 public class PedidoController {
 	
-	public void salvar(Pedido ped){
+	public void salvar(Pedido ped) throws Exception{
 		
-		if(ped.getCod() == null){
-			JOptionPane.showMessageDialog(null, "Pedido não instanciado");
-		}
 		if(ped.getData().equals("")){
-			JOptionPane.showMessageDialog(null, "O campo data esta vazio");
+			throw new Exception("O campo data esta vazio");
 		}
 		if(ped.getCliente()==null){
-			JOptionPane.showMessageDialog(null, "O cod_cliente esta vazio");
+			throw new Exception("O cod_cliente esta vazio");
 		}
 		
 		new PedidoDao().salvar(ped);
 	}
 	
-	public void alterar(Pedido ped){
+	public void alterar(Pedido ped)throws Exception{
 		if(ped.getCod() == null){
-			JOptionPane.showMessageDialog(null, "Pedido não instanciado");
+			throw new Exception("Pedido não instanciado");
 		}
 		if(ped.getData().equals("")){
-			JOptionPane.showMessageDialog(null, "O campo data esta vazio");
+			throw new Exception("O campo data esta vazio");
 		}
 		if(ped.getCliente()==null){
-			JOptionPane.showMessageDialog(null, "O cod_cliente esta vazio");
+			throw new Exception("O cod_cliente esta vazio");
 		}
 		new PedidoDao().alterar(ped);
 	}

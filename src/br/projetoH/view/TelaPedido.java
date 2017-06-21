@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -17,8 +18,9 @@ import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
 import br.projetoH.controller.PedidoController;
-import br.projetoH.model.Cliente;
+import br.projetoH.dao.PedidoDao;
 import br.projetoH.model.Item;
+import br.projetoH.model.ItemTableModel;
 import br.projetoH.model.Pedido;
 import br.projetoH.model.PedidoTableModel;
 
@@ -26,13 +28,12 @@ public class TelaPedido extends JFrame {
 	private PedidoController controller = new PedidoController();
 	private ArrayList<Pedido> newList = new ArrayList<Pedido>();
 	private ArrayList<Item> newList2 = new ArrayList<Item>();
-	private ArrayList<Cliente> newListCli = new ArrayList<Cliente>();
 	private PedidoTableModel model = new PedidoTableModel(newList);
 	
-	//private itemTableModel model2 = new itemTableModel(newList2);
+	private ItemTableModel model2 = new ItemTableModel(newList2);
 	
-	private JTable table = new JTable(/*model*/);
-	private JTable table2 = new JTable(/*model2*/);
+	private JTable table = new JTable(model);
+	private JTable table2 = new JTable(model2);
 	private JLabel lbBuscar = new JLabel("Itens do Pedido (ID):");
 	private JLabel lbBuscarP = new JLabel("Buscar Pedido (ID):");
 	
@@ -55,6 +56,8 @@ public class TelaPedido extends JFrame {
 		congifurepnTab2();
 		congifurepnTab();
 		configureBtSalvar();
+		configureBtListar();
+		configureBtRemover();
 		GridBagLayout layoutData = new GridBagLayout();
 		pnBase.setLayout(layoutData);
 		
@@ -103,10 +106,11 @@ public void congifurepnTab2(){
 		TitledBorder border = new TitledBorder(colorBorder, "Pedidos");
 		pnTab2.setBorder(border);
 		
+		super.setSize(200, 300);
 		super.setContentPane(pnTab2);
 		super.setVisible(true);
 		super.pack();
-		super.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
 	}
 
 //painel itens
@@ -129,8 +133,7 @@ public void congifurepnTab2(){
 		super.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 }
 	
-	//botao salvar
-	
+	//botao inserir
 	private void configureBtSalvar(){
 		ActionListener autenticao = new ActionListener(){
 
@@ -147,5 +150,52 @@ public void congifurepnTab2(){
 	private void JButtomBtSalvarActionPerformed(){
 		TelaCadastroPedido tlPed = new TelaCadastroPedido();
 		tlPed.init();
+	}
+	
+	//botao listar
+	private void configureBtListar(){
+		ActionListener autenticacao = new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				try {
+					JButtomListarPedidos();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		};
+		btList.addActionListener(autenticacao);
+	}
+	
+	public void JButtomListarPedidos() throws Exception{
+			model.setColumnIdentifiers(new String[]{"Código", "Data","Cod_Cliente"});
+
+			this.newList = (ArrayList<Pedido>) controller.listarPedido();
+			for(int i = 0; i< newList.size(); i++){
+				//newList.get(i).getCliente().getCod();
+				model.addRow(new Object[]{this.newList.get(i).getCod(), this.newList.get(i).getData(),this.newList.get(i).getCliente().getCod()});
+			}
+	}
+	
+	//botao remover
+	private void configureBtRemover(){
+		ActionListener autenticacao = new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				JButtomRemoverPedidos();
+			}
+			
+		};
+		btRemove.addActionListener(autenticacao);
+	}
+	private void JButtomRemoverPedidos(){
+		Pedido ped = this.newList.get(table.getSelectedRow());
+		try{
+			controller.excluir(ped.getCod());
+		}catch(Exception ex){
+			JOptionPane.showMessageDialog(null, ex.getMessage());
+		}
 	}
 }

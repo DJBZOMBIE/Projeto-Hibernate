@@ -182,7 +182,6 @@ public class TelaCliente extends JFrame{
 			Cliente i = this.newList.get(table.getSelectedRow());
 			try{
 				controller.excluir(i.getCod());
-				JOptionPane.showMessageDialog(null, "Cliente removido com sucesso!");
 			}catch(Exception e){
 				JOptionPane.showMessageDialog(null, e.getMessage());
 			}
