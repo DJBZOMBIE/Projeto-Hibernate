@@ -9,6 +9,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -16,6 +18,8 @@ import org.hibernate.annotations.Parameter;
 
 @Entity
 @Table(name = "item", schema = "public")
+
+
 public class Item implements Serializable {
 	private static final long serialVersionUID = 1L;
 	

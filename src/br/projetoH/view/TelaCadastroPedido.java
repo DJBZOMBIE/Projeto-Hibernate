@@ -224,6 +224,7 @@ public class TelaCadastroPedido extends JFrame {
 				if(controller.buscarId2(codPed)==1){
 					ped = controller.buscarId(codPed); //passa o id do pedido
 				}else{
+					JOptionPane.showMessageDialog(null,"Erro: O id "+codPed+" não existe!");
 					throw new Exception("Erro: O id "+codPed+" não existe!");
 				}
 				
@@ -232,6 +233,7 @@ public class TelaCadastroPedido extends JFrame {
 				if(controllerProd.buscarId2(codProd)==1){
 					produto = prod.findById(codProd);
 				}else{
+					JOptionPane.showMessageDialog(null,"Erro: O id "+codProd+" não existe!");
 					throw new Exception("Erro: O id "+codProd+" não existe!");
 				}
 				

@@ -5,9 +5,11 @@ import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.swing.JOptionPane;
 import javax.persistence.criteria.CriteriaQuery;
 
@@ -18,7 +20,8 @@ import org.hibernate.criterion.Restrictions;
 public class GenericDao<T extends Serializable>{
 	
 	@PersistenceContext(unitName = "agenda")
-    private final EntityManager entityManager; //conexao com bd
+	protected
+    final EntityManager entityManager; //conexao com bd
     private final Class<T> persistentClass;
     
     public GenericDao() {
@@ -102,12 +105,19 @@ public class GenericDao<T extends Serializable>{
     	Session session = (Session) getEntityManager().getDelegate();
     	return (T) session.createCriteria(persistentClass).add(Restrictions.eq("id", id)).uniqueResult();
     }
+    
+    public List<Entity> listarItensP(){
+    	Query query = getEntityManager().createQuery("FROM" + persistentClass.getCanonicalName());
+    	return query.getResultList();
+    }
+    
     private void close() {
         if (getEntityManager().isOpen()) {
             getEntityManager().close();
         }
         
     }
+    
     
  
 

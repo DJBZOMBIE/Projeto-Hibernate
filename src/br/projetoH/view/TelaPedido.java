@@ -17,8 +17,9 @@ import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
+import br.projetoH.controller.ItemController;
 import br.projetoH.controller.PedidoController;
-import br.projetoH.dao.PedidoDao;
+import br.projetoH.dao.ItemDao;
 import br.projetoH.model.Item;
 import br.projetoH.model.ItemTableModel;
 import br.projetoH.model.Pedido;
@@ -26,6 +27,8 @@ import br.projetoH.model.PedidoTableModel;
 
 public class TelaPedido extends JFrame {
 	private PedidoController controller = new PedidoController();
+	private ItemController controllerItem = new ItemController();
+	
 	private ArrayList<Pedido> newList = new ArrayList<Pedido>();
 	private ArrayList<Item> newList2 = new ArrayList<Item>();
 	private PedidoTableModel model = new PedidoTableModel(newList);
@@ -34,15 +37,15 @@ public class TelaPedido extends JFrame {
 	
 	private JTable table = new JTable(model);
 	private JTable table2 = new JTable(model2);
-	private JLabel lbBuscar = new JLabel("Itens do Pedido (ID):");
+	//private JLabel lbBuscar = new JLabel("Itens do Pedido (ID):");
 	private JLabel lbBuscarP = new JLabel("Buscar Pedido (ID):");
 	
-	private JTextField txPesquisa = new JTextField();
+	//private JTextField txPesquisa = new JTextField();
 	private JTextField txPesquisaP = new JTextField();
 	private JPanel pnBase = new JPanel();
 	private JPanel pnTab = new JPanel();
 	private JPanel pnTab2 = new JPanel();
-	private JButton btbuscar = new JButton("Verificar");
+	private JButton btbuscar = new JButton("Verificar Itens");
 	private JButton btList = new JButton("Listar");
 	private JButton btNovo = new JButton("Novo");
 	private JButton btRemove = new JButton("Remover");
@@ -59,6 +62,7 @@ public class TelaPedido extends JFrame {
 		configureBtListar();
 		configureBtRemover();
 		configureBtPesquisar();
+		configureBtVerificar();
 		
 		GridBagLayout layoutData = new GridBagLayout();
 		pnBase.setLayout(layoutData);
@@ -83,7 +87,7 @@ public void congifurepnTab2(){
 		pnTab2.setLayout(layoutData);
 		
 		GBC gbc1 = new GBC(0,9).setSpan(1, 1);
-		GBC gbc2 = new GBC(2,9).setSpan(1, 1);
+		GBC gbc2 = new GBC(3,6).setSpan(1, 1);
 		GBC gbc8 = new GBC(1,9).setSpan(1, 1);
 		GBC gbc3 = new GBC(0,6).setSpan(1, 1);//botoes
 		GBC gbc4 = new GBC(1,6).setSpan(1, 1);
@@ -93,9 +97,9 @@ public void congifurepnTab2(){
 		GBC gbc10 = new GBC(1,1).setSpan(1, 1);
 		GBC gbc11 = new GBC(2,1).setSpan(1, 1);
 
-		pnTab2.add(lbBuscar,gbc1);
+		//pnTab2.add(lbBuscar,gbc1);
 		pnTab2.add(btbuscar,gbc2); //pesquisar itens do pedido
-		pnTab2.add(txPesquisa,gbc8);
+		//pnTab2.add(txPesquisa,gbc8);
 		pnTab2.add(btList, gbc3);
 		pnTab2.add(btNovo, gbc4);
 		pnTab2.add(btRemove, gbc6);
@@ -211,6 +215,7 @@ public void congifurepnTab2(){
 			}catch(NumberFormatException ex){
 				JOptionPane.showMessageDialog(null,"Digite apenas números inteiros nos campos de números  " +ex);
 			}
+			
 			model.addRow(new Object[]{ped.getCod(),ped.getData(),ped.getCliente().getCod()});
 			txPesquisaP.setText("");
 		}catch(Exception ex){
@@ -220,8 +225,32 @@ public void congifurepnTab2(){
 	
 	//verificar itens do pedido
 	private void configureBtVerificar(){
-		
+		ActionListener autenticacao = new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				try {
+					JButtonVerificarItens();
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			
+		};
+		btbuscar.addActionListener(autenticacao);
 	}
+	
+	private void JButtonVerificarItens() throws Exception{
+		
+		model2.setColumnIdentifiers(new String[]{"ID", "Cod_pedido","Cod_produto","Quantidade"});
+		   newList2 = (ArrayList<Item>) controllerItem.listarItem();
+			for(int i=0;i<newList2.size();i++){
+				model2.addRow(new Object[]{newList2.get(i).getCod(), newList2.get(i).getPedido().getCod(),newList2.get(i).getProduto().getCod(),newList2.get(i).getQuantidade()});
+			}
+
+	}
+	
 	//botao remover
 	private void configureBtRemover(){
 		ActionListener autenticacao = new ActionListener(){
